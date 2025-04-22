@@ -1,6 +1,7 @@
 import os
 import random
 import sys
+import time
 import pygame as pg
 
 
@@ -11,6 +12,26 @@ DELTA = {pg.K_UP: (0, -5),
          pg.K_RIGHT: (+5, 0),
 }
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+
+def gameover(screen: pg.Surface) -> None:
+    # 黒い背景を追加
+    nw_img = pg.Surface((WIDTH, HEIGHT))
+    nw_img.set_alpha(150)   
+    nw_rct = nw_img.get_rect()
+    pg.draw.rect(nw_img, (0, 0, 0), pg.Rect(0, 0, WIDTH, HEIGHT))
+    screen.blit(nw_img, nw_rct)
+    # "Game Over"の文字を表示
+    fonto = pg.font.Font(None, 80)
+    txt = fonto.render("Game Over", True, (255, 255, 255))
+    screen.blit(txt, [380, 300])
+    kk_img2 = pg.image.load("fig/8.png")
+    #　鳴いているこうかとんを追加
+    screen.blit(kk_img2, [320, 300])
+    screen.blit(kk_img2, [700, 300])
+    
+    pg.display.update()
+
 
 def check_bound(rct: pg.Rect) -> tuple[bool, bool] :
     """
@@ -26,6 +47,7 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool] :
     if rct.top < 0 or HEIGHT < rct.bottom:  # 画面外だったら
         tate = False
     return yoko, tate
+
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -54,7 +76,8 @@ def main():
 
         # こうかとんとRectと爆弾Rectが重なっていたら
         if kk_rct.colliderect(bb_rct):
-            print("Game Over")
+            gameover(screen)
+            time.sleep(3)
             return
 
         key_lst = pg.key.get_pressed()
