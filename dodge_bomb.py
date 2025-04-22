@@ -15,11 +15,16 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
 def gameover(screen: pg.Surface) -> None:
+    """
+    引数：screenのsurface
+    戻り値：なし
+    機能：失敗した時、"Game Over"の文字とこうかとんを黒の背景に表示
+    """
     # 黒い背景を追加
     nw_img = pg.Surface((WIDTH, HEIGHT))
     nw_img.set_alpha(150)   
-    pg.draw.rect(nw_img, (0, 0, 0), pg.Rect(0, 0, WIDTH, HEIGHT))    
     nw_rct = nw_img.get_rect()
+    pg.draw.rect(nw_img, (0, 0, 0), pg.Rect(0, 0, WIDTH, HEIGHT))
     screen.blit(nw_img, nw_rct)
     # "Game Over"の文字を表示
     fonto = pg.font.Font(None, 80)
@@ -32,10 +37,6 @@ def gameover(screen: pg.Surface) -> None:
     
     pg.display.update()
 
-# ---演習２---
-# def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
-#     pg.display.update()
-# -----------
 
 def check_bound(rct: pg.Rect) -> tuple[bool, bool] :
     """
@@ -110,14 +111,7 @@ def main():
         if not tate:  # 上下どちらかにはみ出ていたら
             vy *= -1
         screen.blit(bb_img, bb_rct)  # 爆弾の描画
-
-        # ---演習２---
-        # bb_imgs, bb_accs = init_bb_imgs()
-        # avx = vx*bb_accs[min(tmr//500, 9)]
-        # bb_img = bb_imgs[min(tmr//500, 9)]
-        # pg.display.update()
-        # ------------
-
+        pg.display.update()
         tmr += 1
         clock.tick(50)
 
